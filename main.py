@@ -37,7 +37,7 @@ apps_in_screen = height//77 # Quantos apps cabem na ROI escolhida. Esse número 
 cong = r'--oem 3 --psm 6 outputbase digits'
 apps = []
 
-x1,x2,y1,y2= 92,503,40,70   
+x1,x2,y1,y2= 92,503,35,72   
 
 for app in list(range(apps_in_screen)):
     offset = 77
@@ -60,7 +60,7 @@ for app in list(range(apps_in_screen)):
     for x,b in enumerate(words):
         if x!=0:
             a = b.split()
-            print (a)
+            # print (a)
             if len(a) == 12:
                 # Primeiro retangulo
                 x,y,w,h = int(a[6]),int(a[7]),int(a[8]),int(a[9])
@@ -68,24 +68,30 @@ for app in list(range(apps_in_screen)):
                 # cv2.imshow("Result", ROI)
                 # cv2.waitKey(0)
 
-                x1,x2,y1,y2 = (w+x-86), (w+x), (y-2), (h+10)
+
                 # Região definida pelo quadrado com o tamanaho do horário
-                # Small_ROI = ROI[y:height, x:width]  
-                Small_ROI = ROI[y1:y2, x1:x2]  
+                
+                x1_1,x2_1,y1_1,y2_1 =  (w+x-85), (w+x+10), (0), (h+y+15)
+
+                if (x1_1 < 0):
+                    x1_1 = 0
+
+                Small_ROI = ROI[y1_1:y2_1, x1_1:x2_1]  
 
                 cv2.imshow("Result", Small_ROI)
                 cv2.waitKey(0)
 
 
-                boxes =  (pytesseract.image_to_data(Small_ROI, config=cong))
+                boxes =  (pytesseract.image_to_data(Small_ROI))
+                # boxes =  (pytesseract.image_to_data(Small_ROI, config=cong))
                 words = boxes.splitlines()
 
                 # Varre a região pequena
                 for x,b in enumerate(words):
                     if x!=0:
                         a = b.split()
-                        print (a)
                         if len(a) == 12:
+                            print (a)
                             interno.append(a[-1])
 
                 # x1,x2,y1,y2 = (w+x-56), (w+x), (8), (9)
@@ -100,6 +106,6 @@ for app in list(range(apps_in_screen)):
     y1,y2 = y1+offset, y2+offset
 
 
-
+print (apps)
 # cv2.imshow("Result", complete_roi)
 # cv2.waitKey(0)
