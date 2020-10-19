@@ -4,7 +4,7 @@ You only need the "main.py" and "corretor.py" files. And you need to pip install
 
 To get the total screentime you'll need to take a daily photo from the Bildschirmzeit App (which is the Screentime App from Apple) like this: 
 
-![alt text](https://imgur.com/18Xkp7A)
+![alt text](https://i.imgur.com/18Xkp7A.jpg)
 
 The script uses the words "Kategorien Einblenden" to locate itself, so you always need that in the printscreen. It does a montly analysis, so you get all of your screenshots and put in the same folder, together with the scripts. I name the folder "/photos", but you can change that name in the variable "folder_with_photos". You also need to set the month/year of the analysis, because Tesseract wasn't getting good results with the month name, so I decided to set it statically. 
 
