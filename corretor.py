@@ -1,9 +1,9 @@
 import re
 from datetime import timedelta
 
-
-apps = [['==', '52min'], ['==', '29min'], ['==', '28min'], ['==', '16min'], ['==', '15min'], ['==', '11min'], ['==e', 'Omin'], ['=', '5min'], ['=', '4min'], ['>', 'Amin'], ['2min'], ['Amin']]
-apps_names = [['Skype'], ['Twitter'], ['Instagram'], ['YouTube'], ['Yeelight'], ['Keep'], ['WhatsApp'], ['Forest'], ['Duolingo'], ['Notizen'], ['Jovem', 'Nerd'], ['Google', 'Notizen'], ['Bucher']]
+# Some tests
+apps = [['==', '52min'],  ['==', '28min'], ['==', '16min'], ['==', '15min'], ['==', '11min'], ['==e', 'Omin'], ['=', '5min'], ['=', '4min'], ['>', 'Amin'], ['2min'], ['Amin']]
+apps_names = [['Skype'],  ['Instagram'], ['YouTube'], ['Yeelight'], ['Keep'], ['WhatsApp'], ['Forest'], ['Duolingo'], ['Notizen'], ['Jovem', 'Nerd'], ['Google', 'Notizen'], ['Bucher']]
 
 def corretor(nomes, tempos):
     seconds =re.compile(r'\d+s')

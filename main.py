@@ -11,13 +11,14 @@ import datetime
 import os
 import time
 
+folder_with_photos = "./photos/"
+month = 9
+year = 2020
+
 def analysis(filename):
-    img= cv2.imread("./fotos/"+filename)
+    img= cv2.imread(filename)
     img = cv2.bitwise_not(img)
     height, widht,_ = img.shape
-
-    month = 9
-    year = 2020
 
     # Primeiro o reconhecimento do Dia
     x1,x2,y1,y2 = 150,450, 140,200
@@ -31,7 +32,7 @@ def analysis(filename):
             if (len(words)== 12):
                 texto.append(words[-1])
 
-    # Reconhecimento da Palavra Placeholder
+    # Here is to look for the placeholder
     boxes =  (pytesseract.image_to_data(img)) 
     words = boxes.splitlines()
     for x,b in enumerate(words):
@@ -129,22 +130,14 @@ def main():
         csv_file = csv.writer(File)
         csv_file.writerow(["App", "Time","Day"])
 
-    for filename in os.listdir("./fotos"):
-        if filename.endswith(".jpeg"): 
-            analysis(filename)
+    for filename in os.listdir(folder_with_photos):
+        if filename.endswith(".jpeg"):
+            nome = ("%s%s")%(folder_with_photos, filename)
+            analysis(nome)
             
         else:
             continue
 
-tic= time.time()
-
 main()
 
-toc= time.time()
-
-tempo= str(toc-tic)
-
-print ("Finalizado!")
-print ("Tempo total: " + (tempo))
-
-# analysis("Screentime4.jpeg")
+print ("Finished!")
