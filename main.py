@@ -12,12 +12,17 @@ import os
 import time
 
 folder_with_photos = "./photos/"
-month = 9
+month = 10
 year = 2020
 
 def analysis(filename):
     img= cv2.imread(filename)
     img = cv2.bitwise_not(img)
+
+    # Resizing
+    desired_size = (591,1280)
+    img = cv2.resize(img, desired_size, interpolation = cv2.INTER_AREA)
+
     height, widht,_ = img.shape
 
     # Primeiro o reconhecimento do Dia
@@ -75,6 +80,11 @@ def analysis(filename):
         boxes_app =  (pytesseract.image_to_data(ROI_app))
         words_app = boxes_app.splitlines()
 
+        # Tests
+
+        # cv2.imshow("Result", ROI_app)
+        # cv2.waitKey(0)
+
         interno = []
         interno_apps = []
 
@@ -131,8 +141,9 @@ def main():
         csv_file.writerow(["App", "Time","Day"])
 
     for filename in os.listdir(folder_with_photos):
-        if filename.endswith(".jpeg"):
+        if filename.endswith(".PNG"):
             nome = ("%s%s")%(folder_with_photos, filename)
+            print (nome)
             analysis(nome)
             
         else:
