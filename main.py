@@ -1,4 +1,7 @@
 # Salvar a última ou penúltima região. Para que o usuário possa mandar o resto da lista de apps
+# Reconhecer o nome do mes, para que eu possa fazer vários meses de uma vez.
+
+# O to-do urgente fica no History.md
 
 import pytesseract
 from pytesseract import Output
@@ -38,7 +41,7 @@ def analysis(filename):
                 texto.append(words[-1])
 
     # Here is to look for the placeholder
-    boxes =  (pytesseract.image_to_data(img)) 
+    boxes =  (pytesseract.image_to_data(img,lang='deu')) 
     words = boxes.splitlines()
     for x,b in enumerate(words):
         if x!=0:

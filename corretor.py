@@ -5,18 +5,25 @@ from datetime import timedelta
 apps = [['==', '52min'],  ['==', '28min'], ['==', '16min'], ['==', '15min'], ['==', '11min'], ['==e', 'Omin'], ['=', '5min'], ['=', '4min'], ['>', 'Amin'], ['2min'], ['Amin']]
 apps_names = [['Skype'],  ['Instagram'], ['YouTube'], ['Yeelight'], ['Keep'], ['WhatsApp'], ['Forest'], ['Duolingo'], ['Notizen'], ['Jovem', 'Nerd'], ['Google', 'Notizen'], ['Bucher']]
 
+seconds =re.compile(r'\d+s')
+timeformat = re.compile(r'[\d+h]*[\d+min]*')
+hour = re.compile(r'\d+h')
+minutes = re.compile(r'\d+min')
+
 def corretor(nomes, tempos):
-    seconds =re.compile(r'\d+s')
+
+
+    tratado = [] # Tempos
+    tratado_apps = [] # Nomes
+
     apps_names = [i for i in nomes if i != []] 
+
     for i in tempos:
         if i == []:
             i.append("NaN")
-    tratado = [] # Tempos
-    tratado_apps = [] # Nomes
+
     time,app = "",""
-
-    timeformat = re.compile(r'[\d+h]*[\d]+min')
-
+    
     for i in range(0, len(tempos)):
         app = (" ").join(apps_names[i])
         tratado_apps.append(app)
@@ -34,13 +41,11 @@ def corretor(nomes, tempos):
             time  = time.replace("t", "1")
             time  = time.replace("a", "4")
             time  = time.replace("s", "5")
+            time  = time.replace("q", "9")
 
             time = time[:-3].replace("i", "1") + time[-3:]
-            tratado.append(re.findall(timeformat, time))
+            tratado.append( [i for i in (re.findall(timeformat, time)) if i != ''] )
 
-    hour = re.compile(r'\d+h')
-    minutes = re.compile(r'\d+min')
-    
     em_minutos = []
 
     # Deixa em minutos
@@ -49,17 +54,17 @@ def corretor(nomes, tempos):
         if tratado[i] == []:
             tratado[i] = tratado[i-1]
 
-        # print ([tratado[i][0]])
         hora = re.findall(hour, tratado[i][0])
         minuto = re.findall(minutes, tratado[i][0])
 
-        if hora != []:
+        if hora != [] and minuto != []:
             atual = int("".join([s for s in hora[0] if s.isdigit()]))*60 + int("".join([s for s in minuto[0] if s.isdigit()]))
+
+        elif hora != [] and minuto == []:
+            atual = int("".join([s for s in hora[0] if s.isdigit()]))*60
 
         elif tratado[i][0] == "NaN":
             atual = 0
-
-        # elif
 
         else:
             atual = int("".join([s for s in minuto[0] if s.isdigit()]))
@@ -73,12 +78,16 @@ def corretor(nomes, tempos):
             elif (em_minutos[i]==0):
                 em_minutos[i] = em_minutos[i-1]
 
-    
-
     tempos = []
+
+    #Formatação
     for i in em_minutos:
 
-        tempos.append(str(timedelta(minutes=i))[:-3])
+        formatado = str(timedelta(minutes=i))[:-3]
+        if len(formatado.split(':')[0])>1:
+            formatado = formatado[1:]
+
+        tempos.append(formatado)
 
     nomes = tratado_apps
     return nomes, tempos
